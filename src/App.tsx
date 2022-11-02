@@ -1,24 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useEffect} from 'react';
+import {useUsers} from "./Users.context";
 
 function App() {
+  const {users, loading, error, fetchUsers} = useUsers();
+
+  useEffect(() => {
+    void fetchUsers();
+  }, [fetchUsers]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {error && <p style={{color: 'red'}}>{error}</p>}
+      {loading && <p>Loading...</p>}
+      {users.map(user => (
+        <div key={user.id}>
+          <p>{user.username}</p>
+          <p>{user.age}</p>
+        </div>
+      ))
+      }
     </div>
   );
 }
